@@ -1,4 +1,6 @@
 #include<iostream>
+#include<conio.h> //_getch ()
+#include <windows.h> //sleep(1000)
 using namespace std;
 
 /*
@@ -43,6 +45,7 @@ public:
 	void print_board(); /*outputs the updated board WITH the user on it*/
 	bool is_new_game(); /*determines if the game is new or not*/
 	void move_player();
+	bool detect_death();
 
 	void current_player_position();
 	void movement_logic();
@@ -56,19 +59,21 @@ public:
 int main()
 {
 	Snake user;
-	char input = NULL;
+	char input = _getch();
 
 	while (input != 'v')
 	{
 		user.setup_board();
-		cin >> input;
+		input = _getch();
+
 		user.set_player_direction(input);
 		user.print_board();
 		user.move_player();
+		//user.detect_death(); //build this into a function idk which one though
 		system("cls");
 		user.print_board();
+		//Sleep(500);
 	}
-
 
 	return 0;
 }
@@ -101,13 +106,7 @@ void Snake::setup_board()
 				ary[i][j] = '1';
 			else
 				ary[j][i] = '2';
-		}
-	}
 
-	for (int i = 0; i < length; i++)
-	{
-		for (int j = 0; j < length; j++)
-		{
 			if (j % 2 == 1)
 				ary[i][j] = '3';
 			else
@@ -143,6 +142,25 @@ void Snake::move_player()
 		movement_logic();
 }
 
+bool Snake::detect_death()
+{
+	for (int i = 0; i < length; i++)
+	{
+		for (int j = 0; j < length; j++)
+		{
+			if (i == -1 || i == 10 || j == -1 || j == 10)
+			{
+				current_position_X = i;
+				current_position_Y = i;
+				current_position_X = j;
+				current_position_Y = j;
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+
 void Snake::current_player_position()
 {
 	ary[current_position_Y][current_position_X];
@@ -166,7 +184,7 @@ void Snake::movement_logic()
 void Snake::set_player_direction(char movement)
 {
 	//if (movement == 'w' || movement == 'a' || movement == 's' || movement == 'd' || movement == 'n')
-		player_keystroke = movement;
+	player_keystroke = movement;
 	//return;
 }
 
