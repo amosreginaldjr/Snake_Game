@@ -66,6 +66,9 @@ public:
 	void generate_new_food_coordinates();
 	int getFoodX();
 	int getFoodY();
+	
+	//death:
+	void createDeathZone();
 
 	void current_player_position();
 	void movement_logic();
@@ -90,16 +93,16 @@ int main()
 		user.print_board();
 		user.move_player();
 		user.set_food_position();
-		//user.detect_death(); //build this into a function idk which one though
+		user.detect_death(); //build this into a function idk which one though
 		system("cls");
 		user.print_board();
 		//Sleep(100);
 	}
 
 	cout << endl << endl << endl << endl << endl << endl;
-	cout << user.getFoodX()<< endl;
+	cout << user.getFoodX() << endl;
 	Sleep(1000);
-	cout << user.getFoodY()<< endl;
+	cout << user.getFoodY() << endl;
 
 	return 0;
 }
@@ -161,8 +164,8 @@ void Snake::print_board()
 
 bool Snake::is_new_game()
 {
-	if (score == 0 && current_position_X == default_position_X 
-		&& current_position_Y == default_position_Y )
+	if (score == 0 && current_position_X == default_position_X
+		&& current_position_Y == default_position_Y)
 		return 1;
 	return 0;
 }
@@ -175,21 +178,30 @@ void Snake::move_player()
 		movement_logic();
 }
 
-//bool Snake::detect_death()
-//{
-//	for (int i = 0; i < length; i++)
-//	{
-//		for (int j = 0; j < length; j++)
-//		{
-//			if (current_position_X == -1 || current_position_X == 10 
-//				|| current_position_Y == -1 || current_position_Y == 10)
-//			{
-//				return 0;
-//			}
-//		}
-//	}
-//	return 1;
-//}
+bool detect_death()
+{
+	//WORKING HERE
+	if (ary[current_position_Y][current_position_X] == '$')
+}
+
+
+void Snake::createDeathZone()
+{
+	for (int i = 0; i < length; i++)
+	{
+		for (int j = 0; j < length; j++)
+		{
+			if (i == 0 || i == 9 || j == 0 || j == 9)
+			{
+				ary[i][j] = '$';
+				ary[j][i] = '$';
+			}
+		}
+	}
+	if (getFoodX() == 0 || getFoodX() == 0 || getFoodY() == 9 || getFoodY() == 9)
+		generate_new_food_coordinates();
+}
+
 
 void Snake::current_player_position()
 {
